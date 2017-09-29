@@ -126,7 +126,7 @@ End User Instructions
 
 Users that resolve cases on the hive should automatically get emails with instructions on how to access their LimeSurvey responses.
 
-__In order for the user to recieve emails, their TheHive username must match the username of their mailbox.sc.edu email address!__
+__In order for the user to recieve emails, their TheHive username must match the username of their email address!__
 
 A user must do the following to complete their response:
 
