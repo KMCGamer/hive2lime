@@ -16,6 +16,7 @@ from ConfigParser import SafeConfigParser
 from datetime import datetime
 import logging
 import time
+import os
 import urllib3
 from hive2lime.hive import Hive
 from hive2lime.lime import Lime
@@ -71,6 +72,11 @@ def main():
 
 
 if __name__ == "__main__":
+    # change working environment so relative paths work. "./XXX/X.ini"
+    abspath = os.path.abspath(__file__)
+    dname = os.path.dirname(abspath)
+    os.chdir(dname)
+
     # get rid of annoying insecure warnings
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
