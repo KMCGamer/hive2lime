@@ -2,4 +2,3 @@ test/
 *.pyc
 .vscode/
 log/
-config/*.ini
