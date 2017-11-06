@@ -114,9 +114,9 @@ interval = 86400000
 debug = true
 
 [email]
-smtp = smtp.server.com
-sender = sender@server.com
-debug = debugger@server.com
+smtp = smtp.domain.com
+sender = sender@domain.com
+debug = debugger@domain.com
 domain = sub.domain.com
 ```
 
