@@ -85,7 +85,7 @@ The **[admin_panel]** section is for the LimeSurvey API user credentials.
 The **[misc]** section is for the BASE URL to access limesurvey as well as the survey id for the active survey.
 
 * **url**: Base URL for limesurvey that includes up to index.php.
-* **survey_id**: The ID (integer value) for the survey. Can be found on the _Survey list_ page.
+* **sid**: The ID (integer value) for the survey. Can be found on the _Survey list_ page.
 
 The **[mysql]** section contains information to access limesurveys database for specific insertions. 
 
@@ -103,7 +103,7 @@ password = pass
 
 [misc]
 url = https://XXXXX/limesurvey/index.php
-survey_id = 123456
+sid = 123456
 
 [mysql]
 user = mysqluser
