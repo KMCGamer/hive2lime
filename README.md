@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+**Note:** This is primarily for the University of South Carolina Information Security Team. However, if you find some code samples within this repository that may useful for your own projects, you are free to do with it as you may.
+
+>>>>>>> 13fbc54d639a4a028fed58f3e5d1adff32f3b3ee
 Table of contents
 =================
 1. Introduction
@@ -14,11 +19,19 @@ In a nutshell, the hive2lime script takes cases from TheHive that have been mark
 
 Installation
 -------------
+<<<<<<< HEAD
 There is no setup.py currently. You must copy the entire repo to a destination folder.
 
 1. `sudo git clone https://github.com/KMCGamer/hive2lime.git`
 2. Go through the configuration files and fill out the information.
 3. Set up a cronjob to run `main.py` based on your interval.
+=======
+There is no setup.py. You must copy the entire repo to a destination folder.
+
+1. `sudo git clone https://github.com/KMCGamer/hive2lime.git`
+2. Go through the configuration files and fill out the information.
+3. Set up a cronjob to run hive2lime.py based on your interval.
+>>>>>>> 13fbc54d639a4a028fed58f3e5d1adff32f3b3ee
 
 Lime Settings
 -------------
@@ -47,18 +60,34 @@ In order for this script to work, several options need to be enabled on LimeSurv
 
 `Surveys > SURVEY_NAME > Survey Properties > General settings & texts`
 
+<<<<<<< HEAD
 - Set "Token-based response persistence" to __OFF__.
 - Set "Allow multiple responses or update responses with one token" to __ON__.
+=======
+* Set "Token-based response persistence" to __OFF__.
+* Set "Allow multiple responses or update responses with one token" to __ON__.
+>>>>>>> 13fbc54d639a4a028fed58f3e5d1adff32f3b3ee
 
 Config Files
 ------------
 
+<<<<<<< HEAD
 All configuration options are here. If they are not here, then you will need to modifiy the script. The config files do not use quotes (""). When editing config files, follow the examples below.
+=======
+All configuration options are in the config folder. If they are not here, then you will need to modifiy the script. The config files do not use quotes (""). When editing config files, follow the examples below.
+>>>>>>> 13fbc54d639a4a028fed58f3e5d1adff32f3b3ee
 
 ### hive.ini
 
 Put all the information for TheHive into the hive.ini file. The URL should be the base url to access TheHive. Do not append a forward slash to the end of it. The username and password are from the api user.
 
+<<<<<<< HEAD
+=======
+* **url**: Base URL to access TheHive (including port and nothing after).
+* **user**: Username for TheHive API user.
+* **password**: Password for TheHive API user.
+
+>>>>>>> 13fbc54d639a4a028fed58f3e5d1adff32f3b3ee
 #### Example hive.ini:
 ```ini
 [hive]
@@ -71,6 +100,7 @@ password = pass
 
 All information for LimeSurvey should go into the lime.ini file. 
 
+<<<<<<< HEAD
 The `admin_panel` section is for the LimeSurvey API user credentials. 
 
 The `misc` section is for the BASE URL to access limesurvey as well as the survey id for the active survey. 
@@ -78,6 +108,25 @@ The `misc` section is for the BASE URL to access limesurvey as well as the surve
 The `mysql` section contains information to access limesurveys database for specific insertions. 
 
 Tokens can be appended to the end of this file in the `tokens` section. Put the username of the person the token corresponds to from TheHive to LimeSurvey. To be clear, __the username is from TheHive and the token is from LimeSurvey__.
+=======
+The **[admin_panel]** section is for the LimeSurvey API user credentials.  
+
+* **user**: Username of the LimeSurvey API user.
+* **password**: Password of the LimeSurvey API user.
+
+The **[misc]** section is for the BASE URL to access limesurvey as well as the survey id for the active survey.
+
+* **url**: Base URL for limesurvey that includes up to index.php.
+* **sid**: The ID (integer value) for the survey. Can be found on the _Survey list_ page.
+
+The **[mysql]** section contains information to access limesurveys database for specific insertions. 
+
+* **user**: Username of the mysql limesurvey user.
+* **password**: Password of the mysql limesurvey user.
+* **database**: Name of the database containing limesurvey data (usually just called "limesurvey").
+
+Tokens can be appended to the end of this file in the **[tokens]** section. Put the username of the person the token corresponds to from TheHive to LimeSurvey. To be clear, __the username is from TheHive and the token is from LimeSurvey__.
+>>>>>>> 13fbc54d639a4a028fed58f3e5d1adff32f3b3ee
 
 #### Example lime.ini:
 ```ini
@@ -87,7 +136,11 @@ password = pass
 
 [misc]
 url = https://XXXXX/limesurvey/index.php
+<<<<<<< HEAD
 survey_id = 123456
+=======
+sid = 123456
+>>>>>>> 13fbc54d639a4a028fed58f3e5d1adff32f3b3ee
 
 [mysql]
 user = mysqluser
@@ -103,9 +156,23 @@ example2 = aI2kF7af4GL68mR
 
 All miscelaneous information for the script should go in here.
 
+<<<<<<< HEAD
 The `script` section is for setting how often you want the script to run and has debugging options.
 
 The `email` section is for sending emails to end users for completion of surveys.
+=======
+The **[script]** section is for setting how often you want the script to run and has debugging options.
+
+* **interval**: How often you want the script to run (in milliseconds).
+* **debug**: Whether you want logs or not (true or false). Logs appear in the logs folder.
+
+The **[email]** section is for sending emails to end users for completion of surveys.
+
+* **smtp**: SMTP address to be used for sending emails.
+* **sender**: The email address of the sender you wish to use.
+* **debug**: The email address to send error alerts to (for debugging).
+* **domain**: The domain of the email addresses that will receive the emails.
+>>>>>>> 13fbc54d639a4a028fed58f3e5d1adff32f3b3ee
 
 #### Example misc.ini:
 ```ini
@@ -114,9 +181,16 @@ interval = 86400000
 debug = true
 
 [email]
+<<<<<<< HEAD
 smtp = smtp.server.com
 sender = sender@server.com
 debug = debugger@server.com
+=======
+smtp = smtp.domain.com
+sender = sender@domain.com
+debug = debugger@domain.com
+domain = sub.domain.com
+>>>>>>> 13fbc54d639a4a028fed58f3e5d1adff32f3b3ee
 ```
 
 End User Instructions
@@ -142,6 +216,7 @@ The create\_json function in the script must be edited in order for it to work o
 ```python
 def create_json(case, token):
     return {
+<<<<<<< HEAD
         "token": token,
         "submitdate": "",
         # Hive reference id.
@@ -154,6 +229,23 @@ def create_json(case, token):
         # Time worked.
         "795616X6X63": case['metrics'].get('Time Worked', "")
     }
+=======
+            # token that represents who the case belongs to
+            "token": token,
+            # Survey response submission date.
+            "submitdate": "",
+            # Hive reference id.
+            "386328X14X651": case['caseId'],
+            # When did you start your investigation?
+            "386328X14X646": datetime.fromtimestamp(int(case['startDate'] / 1000)).strftime('%Y-%m-%d'),
+            # Time to compromise to discovery
+            "386328X15X916other": case['metrics'].get('Dwell Time', ""),
+            # Time from open to close
+            "386328X15X905": case['metrics'].get("Close Time", ""),
+            # Time worked.
+            "386328X15X904": case['metrics'].get('Time Worked', "")
+        }
+>>>>>>> 13fbc54d639a4a028fed58f3e5d1adff32f3b3ee
 ```
 
 Common Questions
@@ -174,3 +266,10 @@ If this does not work, then you may manually create your own LimeSurvey response
 > When I go back to the survey response page manually, it doesn't let me enter in another case.
 
 Click the link in the email instead. This will take you to a page that defaults to a new survey response. I believe by default limesurvey puts a cookie on your computer so you go back to the same survey response.
+<<<<<<< HEAD
+=======
+
+> Why is this so complicated?
+
+Blame LimeSurvey.
+>>>>>>> 13fbc54d639a4a028fed58f3e5d1adff32f3b3ee

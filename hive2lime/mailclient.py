@@ -4,7 +4,6 @@ from email.mime.text import MIMEText
 from ConfigParser import SafeConfigParser
 from string import Template
 
-
 class MailClient:
 
     def __init__(self, debug=False):
@@ -13,7 +12,9 @@ class MailClient:
 
         self.email = parser.get('email', 'sender')
         self.smtp_addr = parser.get('email', 'smtp')
+        self.domain = parser.get('email', 'domain')
         self.debug = debug
+
 
     def send(self, person, cases, token):
         """ Sends a notification email for users that have to complete responses.
@@ -38,8 +39,7 @@ class MailClient:
         with open("./config/email/subject.txt") as fileobj:
             msg['Subject'] = fileobj.read()
         msg['From'] = self.email
-        msg['To'] = person + "@mailbox.sc.edu"
-        # msg['To'] = "kcarhart@mailbox.sc.edu"  # DEBUG
+        msg['To'] = '{}@{}'.format(person, self.domain)
 
         # Create the body of the message (a plain-text and an HTML version).
         with open("./config/email/body.html") as htmlfile:
