@@ -6,6 +6,8 @@ import hashlib
 import time
 import requests
 import pymysql
+import base64
+
 
 class Lime:
 
@@ -57,7 +59,8 @@ class Lime:
                 logging.debug("Lime session created.")
             return request.json()["result"]
         else:
-            raise ValueError("create_session: Response was: {}.".format(request.status_code))
+            raise ValueError(
+                "create_session: Response was: {}.".format(request.status_code))
 
     def release_session(self):
         """ Ends the api session by releasing the session_key.
@@ -89,7 +92,8 @@ class Lime:
             if self.debug:
                 logging.debug("Lime session released.")
         else:
-            raise ValueError("release_session: Response was: {}.".format(request.status_code))
+            raise ValueError(
+                "release_session: Response was: {}.".format(request.status_code))
 
     def add_response(self, response_data):
         """ Adds a response to the specified survey_id with data from response_data.
@@ -126,9 +130,10 @@ class Lime:
             srid = request.json()['result']
             if self.debug:
                 logging.debug("Lime response added. SRID: %s", srid)
-            return srid # returns the srid of the new response
+            return srid  # returns the srid of the new response
         else:
-            raise ValueError("add_response: response was: {}.".format(request.status_code))
+            raise ValueError(
+                "add_response: response was: {}.".format(request.status_code))
 
     @staticmethod
     def create_json(case, token):
@@ -139,14 +144,15 @@ class Lime:
             # Survey response submission date.
             "submitdate": "",
             # Hive reference id.
-            "795616X1X1": case['caseId'],
+            "386328X14X651": case['caseId'],
             # When did you start your investigation?
-            "795616X1X4": datetime.fromtimestamp(int(case['startDate'] / 1000)).strftime('%Y-%m-%d'),
-            # Time to compromise.
-            "795616X6X57SQ001": "Y" if "Dwell Time" in case['metrics'] else "",
-            "795616X6X57SQ001comment": case['metrics'].get('Dwell Time', ""),
+            "386328X14X646": datetime.fromtimestamp(int(case['startDate'] / 1000)).strftime('%Y-%m-%d'),
+            # Time to compromise to discovery
+            "386328X15X916other": case['metrics'].get('Dwell Time', ""),
+            # Time from open to close
+            "386328X15X905": case['metrics'].get("Close Time", ""),
             # Time worked.
-            "795616X6X63": case['metrics'].get('Time Worked', "")
+            "386328X15X904": case['metrics'].get('Time Worked', "")
         }
 
     def save_response(self, caseid, srid):
@@ -175,15 +181,48 @@ class Lime:
         ip = ""
         saved_thisstep = 1
         status = "S"
-        saved_date = datetime.fromtimestamp(int(round(time.time()))).strftime('%Y-%m-%d %H:%M:%S')
+        saved_date = datetime.fromtimestamp(
+            int(round(time.time()))).strftime('%Y-%m-%d %H:%M:%S')
         refurl = ""
 
         try:
             with connection.cursor() as cursor:
-                query = "INSERT INTO `lime_saved_control` (`sid`,`srid`,`identifier`,`access_code`,`email`,`ip`,`saved_thisstep`,`status`,`saved_date`,`refurl`) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')".format(self.sid, srid, identifier, access_code, email, ip, saved_thisstep, status, saved_date, refurl)
+                query = "INSERT INTO `lime_saved_control` (`sid`,`srid`,`identifier`,`access_code`,`email`,`ip`,`saved_thisstep`,`status`,`saved_date`,`refurl`) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')".format(
+                    self.sid, srid, identifier, access_code, email, ip, saved_thisstep, status, saved_date, refurl)
                 cursor.execute(query)
                 connection.commit()
             if self.debug:
-                logging.debug("Mysql database entry completed for srid: %s", srid)
+                logging.debug(
+                    "Mysql database entry completed for srid: %s", srid)
         finally:
             connection.close()
+
+    def export_responses(self):
+        url = self.url + "/admin/remotecontrol"
+
+        headers = {
+            "content-type": "application/json",
+            "connection": "Keep-Alive"
+        }
+
+        data = json.dumps({
+            "method": "export_responses",
+            "params": [self.sessionkey,
+                       self.sid,
+                       'json',
+                       'en',
+                       'incomplete',
+                       'code',
+                       'short',
+                       '', '',
+                       ['token', '386328X14X651']],
+            "id": 1
+        })
+
+        request = requests.post(url, data=data, headers=headers, verify=False)
+
+        if request.status_code == 200:
+            return json.loads(base64.decodestring(json.loads(request.text)['result']))['responses']
+        else:
+            raise ValueError(
+                "export_responses: response was: {}.".format(request.status_code))

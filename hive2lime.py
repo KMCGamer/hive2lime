@@ -8,9 +8,6 @@ Email: kcarhart@email.sc.edu
 Description: Takes cases that have been resolved in The Hive within a specified
     interval and imports them to LimeSurvey as new responses. Users then go to
     the survey, input the case number and complete the survey.
-
-Version: 0.0.1 (initial release)
-
 """
 from ConfigParser import SafeConfigParser
 from datetime import datetime
@@ -66,8 +63,10 @@ def main():
         srid = lime.add_response(response)
         lime.save_response(case["caseId"], srid)
 
+    incomplete_cases = lime.export_responses()
+
     mailclient = MailClient(debug=DEBUG)
-    mailclient.multisend(cases, tokens)
+    mailclient.multisend(incomplete_cases, tokens)
     lime.release_session()
 
 
@@ -89,7 +88,7 @@ if __name__ == "__main__":
     if DEBUG:
         logging.getLogger("urllib3").setLevel(logging.WARNING)
 
-        DEBUG_STATE = str(datetime.fromtimestamp(int(round(time.time()))).strftime('%Y-%m-%d'))
+        DEBUG_STATE = str(datetime.fromtimestamp(int(round(time.time()))).strftime('%Y-%m-%d')) + '.txt'
         logging.basicConfig(
             filename="./log/{}".format(DEBUG_STATE),
             format='%(levelname)s:%(message)s',

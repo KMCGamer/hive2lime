@@ -4,17 +4,16 @@ from email.mime.text import MIMEText
 from ConfigParser import SafeConfigParser
 from string import Template
 
+
 class MailClient:
 
     def __init__(self, debug=False):
         parser = SafeConfigParser()
         parser.read('./config/misc.ini')
 
-        # self.email = parser.get('email', 'sender')
-        self.email = "uscitsec@mailbox.sc.edu"
+        self.email = parser.get('email', 'sender')
         self.smtp_addr = parser.get('email', 'smtp')
         self.debug = debug
-
 
     def send(self, person, cases, token):
         """ Sends a notification email for users that have to complete responses.
@@ -30,7 +29,8 @@ class MailClient:
         parser = SafeConfigParser()
         parser.read('./config/lime.ini')
         link = "{}/{}?token={}&newtest=Y&lang=en".format(parser.get('misc', 'url'),
-                                                         parser.get('misc', 'sid'),
+                                                         parser.get(
+                                                             'misc', 'sid'),
                                                          token)
 
         # Create message container - the correct MIME type is multipart/alternative.
@@ -38,13 +38,14 @@ class MailClient:
         with open("./config/email/subject.txt") as fileobj:
             msg['Subject'] = fileobj.read()
         msg['From'] = self.email
-        # msg['To'] = person + "@mailbox.sc.edu"
-        msg['To'] = "kcarhart@mailbox.sc.edu"
+        msg['To'] = person + "@mailbox.sc.edu"
+        # msg['To'] = "kcarhart@mailbox.sc.edu"  # DEBUG
 
         # Create the body of the message (a plain-text and an HTML version).
         with open("./config/email/body.html") as htmlfile:
             html = Template(htmlfile.read()).substitute(person=person,
-                                                        cases="<br>".join(cases),
+                                                        cases="<br>".join(
+                                                            cases),
                                                         link=link)
 
         html = MIMEText(html, 'html')
@@ -54,14 +55,16 @@ class MailClient:
         smtp.sendmail(msg['From'], msg['To'], msg.as_string())
         smtp.quit()
 
-    def multisend(self, cases, tokens):
+    def multisend(self, responses, tokens):
         emaildict = {}
-        for case in cases:
-            name = case["updatedBy"]
+        for response in responses:
+            name = response.values()[0]['token']
+            case_id = str(response.values()[0]['Q00002'])
             if name not in emaildict:
-                emaildict[name] = [str(case["caseId"])]
+                emaildict[name] = [case_id]
             else:
-                emaildict[name].append(str(case["caseId"]))
+                emaildict[name].append(case_id)
 
         for person in emaildict:
             self.send(person, emaildict[person], tokens[person])
+            break
