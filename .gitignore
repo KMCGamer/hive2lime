@@ -1,9 +1,4 @@
 test/
 *.pyc
 .vscode/
-<<<<<<< HEAD
 log/
-config/*.ini
-=======
-log/
->>>>>>> 13fbc54d639a4a028fed58f3e5d1adff32f3b3ee

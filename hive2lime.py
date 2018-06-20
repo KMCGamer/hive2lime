@@ -34,11 +34,7 @@ def main():
     query = {
         "_and":[
             {
-<<<<<<< HEAD
                 "_string": "(status:\"Resolved\") AND endDate:[ {} TO * ]".format(interval_time_ago)
-=======
-                "_string": "(status:\"Resolved\") AND endDate:[ {} TO * ]".format(0)
->>>>>>> 13fbc54d639a4a028fed58f3e5d1adff32f3b3ee
             }
         ]
     }
@@ -70,7 +66,6 @@ def main():
         srid = lime.add_response(response)
         lime.save_response(case["caseId"], srid)
 
-<<<<<<< HEAD
     incomplete_cases = lime.export_responses()
 
     mailclient = MailClient(debug=DEBUG)
@@ -78,12 +73,6 @@ def main():
     lime.release_session()
 
 
-=======
-    mailclient = MailClient(debug=DEBUG)
-    mailclient.multisend(cases, tokens)
-    lime.release_session()
-
->>>>>>> 13fbc54d639a4a028fed58f3e5d1adff32f3b3ee
 if __name__ == "__main__":
     # change working environment so relative paths work. "./XXX/X.ini"
     abspath = os.path.abspath(__file__)
